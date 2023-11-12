@@ -22,4 +22,4 @@ nvidia-smi
 # Compile CUDA program and run
 #nvcc -arch sm_20 vecadd.cu -o vecadd
 nvcc -O2 main.cu
-./a.out
+./a.out NO_WARP -o .output/no_warp.txt
