@@ -1,13 +1,13 @@
 ## SLURM PROLOG ###############################################################
-##    Job ID : 12042741
+##    Job ID : 12042836
 ##  Job Name : cuda.sh
-##  Nodelist : gpu2006
+##  Nodelist : gpu2010
 ##      CPUs : 1
 ##   Mem/CPU : 2800 MB
 ## Directory : /oscar/home/nxu4/apma2822/APMA2822B_Vignesh_Neil_HW3
-##   Job Started : Sun Nov 12 16:31:53 EST 2023
+##   Job Started : Sun Nov 12 16:54:23 EST 2023
 ###############################################################################
-Sun Nov 12 16:31:53 2023       
+Sun Nov 12 16:54:24 2023       
 +---------------------------------------------------------------------------------------+
 | NVIDIA-SMI 535.54.03              Driver Version: 535.54.03    CUDA Version: 12.2     |
 |-----------------------------------------+----------------------+----------------------+
@@ -15,8 +15,8 @@ Sun Nov 12 16:31:53 2023
 | Fan  Temp   Perf          Pwr:Usage/Cap |         Memory-Usage | GPU-Util  Compute M. |
 |                                         |                      |               MIG M. |
 |=========================================+======================+======================|
-|   0  Quadro RTX 6000                Off | 00000000:63:00.0 Off |                  Off |
-| 34%   35C    P8              16W / 260W |     30MiB / 24576MiB |      0%      Default |
+|   0  Quadro RTX 6000                Off | 00000000:3F:00.0 Off |                  Off |
+| 33%   40C    P8              28W / 260W |     26MiB / 24576MiB |      0%      Default |
 |                                         |                      |                  N/A |
 +-----------------------------------------+----------------------+----------------------+
                                                                                          
@@ -25,21 +25,69 @@ Sun Nov 12 16:31:53 2023
 |  GPU   GI   CI        PID   Type   Process name                            GPU Memory |
 |        ID   ID                                                             Usage      |
 |=======================================================================================|
-|    0   N/A  N/A     22414      G   X                                            28MiB |
+|    0   N/A  N/A     15101      G   X                                            24MiB |
 +---------------------------------------------------------------------------------------+
 ncuda_devices = 1
-M: 10, N: 10, Time: 88966, Floprate: 2.24805e-09
-M: 10, N: 100, Time: 18, Floprate: 0.000111111
-M: 10, N: 1000, Time: 69, Floprate: 0.000289855
-M: 10, N: 10000, Time: 571, Floprate: 0.000350263
+M: 10, N: 10, Time: 11776, Floprate: 1.69837e-08
+M: 10, N: 100, Time: 16, Floprate: 0.000125
+M: 10, N: 1000, Time: 67, Floprate: 0.000298507
+M: 10, N: 10000, Time: 549, Floprate: 0.000364299
 M: 100, N: 10, Time: 11, Floprate: 0.000181818
+M: 100, N: 100, Time: 27, Floprate: 0.000740741
+M: 100, N: 1000, Time: 149, Floprate: 0.00134228
+M: 100, N: 10000, Time: 929, Floprate: 0.00215285
+M: 1000, N: 10, Time: 24, Floprate: 0.000833333
+M: 1000, N: 100, Time: 96, Floprate: 0.00208333
+M: 1000, N: 1000, Time: 248, Floprate: 0.00806452
+M: 1000, N: 10000, Time: 2244, Floprate: 0.00891266
+M: 10000, N: 10, Time: 83, Floprate: 0.00240964
+M: 10000, N: 100, Time: 90, Floprate: 0.0222222
+M: 10000, N: 1000, Time: 360, Floprate: 0.0555556
+ncuda_devices = 1
+M: 10, N: 10, Time: 16101, Floprate: 1.24216e-08
+M: 10, N: 100, Time: 12, Floprate: 0.000166667
+M: 10, N: 1000, Time: 25, Floprate: 0.0008
+M: 10, N: 10000, Time: 95, Floprate: 0.00210526
+M: 100, N: 10, Time: 10, Floprate: 0.0002
+M: 100, N: 100, Time: 22, Floprate: 0.000909091
+M: 100, N: 1000, Time: 82, Floprate: 0.00243902
+M: 100, N: 10000, Time: 88, Floprate: 0.0227273
+M: 1000, N: 10, Time: 23, Floprate: 0.000869565
+M: 1000, N: 100, Time: 82, Floprate: 0.00243902
+M: 1000, N: 1000, Time: 80, Floprate: 0.025
+M: 1000, N: 10000, Time: 188, Floprate: 0.106383
+M: 10000, N: 10, Time: 89, Floprate: 0.00224719
+M: 10000, N: 100, Time: 91, Floprate: 0.021978
+M: 10000, N: 1000, Time: 222, Floprate: 0.0900901
+ncuda_devices = 1
+M: 10, N: 10, Time: 4377, Floprate: 4.56934e-08
+M: 10, N: 100, Time: 14, Floprate: 0.000142857
+M: 10, N: 1000, Time: 24, Floprate: 0.000833333
+M: 10, N: 10000, Time: 100, Floprate: 0.002
+M: 100, N: 10, Time: 11, Floprate: 0.000181818
+M: 100, N: 100, Time: 21, Floprate: 0.000952381
+M: 100, N: 1000, Time: 83, Floprate: 0.00240964
+M: 100, N: 10000, Time: 111, Floprate: 0.018018
+M: 1000, N: 10, Time: 24, Floprate: 0.000833333
+M: 1000, N: 100, Time: 115, Floprate: 0.00173913
+M: 1000, N: 1000, Time: 75, Floprate: 0.0266667
+M: 1000, N: 10000, Time: 221, Floprate: 0.0904977
+M: 10000, N: 10, Time: 88, Floprate: 0.00227273
+M: 10000, N: 100, Time: 86, Floprate: 0.0232558
+M: 10000, N: 1000, Time: 194, Floprate: 0.103093
+ncuda_devices = 1
+M: 10, N: 10, Time: 5566, Floprate: 3.59324e-08
+M: 10, N: 100, Time: 16, Floprate: 0.000125
+M: 10, N: 1000, Time: 26, Floprate: 0.000769231
+M: 10, N: 10000, Time: 88, Floprate: 0.00227273
+M: 100, N: 10, Time: 18, Floprate: 0.000111111
 M: 100, N: 100, Time: 29, Floprate: 0.000689655
-M: 100, N: 1000, Time: 199, Floprate: 0.00100503
-M: 100, N: 10000, Time: 923, Floprate: 0.00216685
-M: 1000, N: 10, Time: 25, Floprate: 0.0008
-M: 1000, N: 100, Time: 121, Floprate: 0.00165289
-M: 1000, N: 1000, Time: 244, Floprate: 0.00819672
-M: 1000, N: 10000, Time: 2247, Floprate: 0.00890076
-M: 10000, N: 10, Time: 115, Floprate: 0.00173913
-M: 10000, N: 100, Time: 149, Floprate: 0.0134228
-M: 10000, N: 1000, Time: 357, Floprate: 0.0560224
+M: 100, N: 1000, Time: 87, Floprate: 0.00229885
+M: 100, N: 10000, Time: 312, Floprate: 0.00641026
+M: 1000, N: 10, Time: 86, Floprate: 0.000232558
+M: 1000, N: 100, Time: 184, Floprate: 0.00108696
+M: 1000, N: 1000, Time: 130, Floprate: 0.0153846
+M: 1000, N: 10000, Time: 240, Floprate: 0.0833333
+M: 10000, N: 10, Time: 648, Floprate: 0.000308642
+M: 10000, N: 100, Time: 647, Floprate: 0.00309119
+M: 10000, N: 1000, Time: 695, Floprate: 0.028777

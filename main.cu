@@ -4,6 +4,7 @@
 #include <random>
 #include <fstream>
 #include <iostream>
+#include <cmath>
 
 using namespace std;
 
@@ -218,6 +219,9 @@ void runExperiment(Experiment e, std::string output) {
         struct timeval startTime;
         struct timeval endTime;
 
+        gettimeofday(&startTime, nullptr);  
+        gettimeofday(&endTime, nullptr);
+
         if (e == NO_WARP) {
             algorithm = "No Warp";
 
@@ -275,6 +279,75 @@ void runExperiment(Experiment e, std::string output) {
     generateLatexTable(rowDims, colDims, executionTimes, flopRates, size, algorithm, output);
 }
 
+void validate(Experiment e) {
+    int M = 100;
+    int N = 100;
+
+    double mat_h[M*N] = {0};
+    double vec_h[N] = {0};
+    double res_h[M] = {0};
+
+    instantiateMatVec(M, N, mat_h, vec_h);
+
+    double *mat_d;
+    double *vec_d;
+    double *res_d;
+    
+    // allocate memory on device
+    cudaMalloc( (void**) &mat_d, sizeof(double)*M*N);
+    cudaMalloc( (void**) &vec_d, sizeof(double)*N);
+    cudaMalloc( (void**) &res_d, sizeof(double)*M);
+
+    //copy data from HOST to DEVICE
+    cudaMemcpy(vec_d,vec_h,sizeof(double)*N,cudaMemcpyHostToDevice);
+    cudaMemcpy(mat_d,mat_h,sizeof(double)*M*N,cudaMemcpyHostToDevice);
+
+    if (e == NO_WARP) {
+        dim3 nthreads(256, 1, 1); // threads per block NOTE NOT MORE THAN 1024
+        dim3 nblocks ((M + nthreads.x-1)/nthreads.x, 1, 1); // blocks per grid -> should be 1
+        matVecMulNoWarp<<<nblocks, nthreads, 0, 0>>>(mat_d, vec_d, res_d, M, N);
+    } else if (e == ONE_WARP_ONE_ROW) {
+        dim3 nthreads(WARP_SIZE, 1, 1); // Threads per block 
+        dim3 nblocks (M, 1, 1); // one block per row
+        matVecMulOneWarp<<<nblocks, nthreads, 0, 0>>>(mat_d, vec_d, res_d, M, N);
+    } else if (e == ONE_WARP_MULTI_ROW) {
+
+        dim3 nthreads(WARP_SIZE*ROWS_PER_BLOCK, 1, 1);
+        dim3 nblocks((M + ROWS_PER_BLOCK-1)/ROWS_PER_BLOCK, 1, 1); 
+        matVecMulMultiRowOneBlock<<<nblocks, nthreads, 0, 0>>>(mat_d, vec_d, res_d, M, N);
+    } else if (e == MULTI_WARP) {
+        dim3 nthreads(WARP_SIZE * NWARPS, 1, 1);
+        dim3 nblocks (M, 1, 1); // one block per row
+        matVecMulMultiWarp<<<nblocks, nthreads, 0, 0>>>(mat_d, vec_d, res_d, M, N);
+    }
+
+    cudaDeviceSynchronize();
+    //copy data from DEVICE to HOST
+    cudaMemcpy(res_h,res_d,sizeof(double)*M,cudaMemcpyDeviceToHost);
+
+    double expected[M] = {0};
+    for (int i = 0; i < M; i++) {
+        double sum = 0.0;
+        int offset = i * N;
+        for (int j = 0; j < N; j++) {
+            sum += mat_h[offset+j] * vec_h[j];
+        }
+        expected[i] = sum;
+    }
+
+    for (int i = 0; i < M; i++) {
+        if (abs(expected[i] - res_h[i]) > 0.0001) {
+            printf("DIFF FOUND: expected: %g, actual: %g", expected[i], res_h[i]);
+        }
+    }
+
+    //free memory 
+    cudaFree(res_d);
+    cudaFree(vec_d);
+    cudaFree(mat_d);
+}
+
+
 int main(int argc, char *argv[]) {
 
     if ((argc < 2) || (argc > 4))
@@ -316,4 +389,5 @@ int main(int argc, char *argv[]) {
     cudaSetDevice(0);
 
     runExperiment(e, output);
+    validate(e);
 }
